@@ -65,6 +65,21 @@ body {
 <button id="play-music">Play Music 💖</button>
 <div id="heart"></div>
 
+<!-- Hidden div with all photos -->
+<div id="all-photos" style="display:none;">
+  <img src="photos/photo1.jpg">
+  <img src="photos/photo2.jpg">
+  <img src="photos/photo3.jpg">
+  <img src="photos/photo4.jpg">
+  <img src="photos/photo5.jpg">
+  <img src="photos/photo6.jpg">
+  <img src="photos/photo7.jpg">
+  <img src="photos/photo8.jpg">
+  <img src="photos/photo9.jpg">
+  <img src="photos/photo10.jpg">
+  <!-- Add all other photos here -->
+</div>
+
 <audio id="bg-music" loop>
   <source src="love-song.mp3" type="audio/mpeg">
 </audio>
@@ -78,32 +93,16 @@ playBtn.addEventListener("click", () => {
   playBtn.style.display = "none";
 });
 
-// --------- List all photos in the folder ---------
-// You must manually list the filenames inside photos/ folder
-const photoFiles = [
-  "photos/photo1.jpg",
-  "photos/photo2.jpg",
-  "photos/photo3.jpg",
-  "photos/photo4.jpg",
-  "photos/photo5.jpg",
-  "photos/photo6.jpg",
-  "photos/photo7.jpg",
-  "photos/photo8.jpg",
-  "photos/photo9.jpg",
-  "photos/photo10.jpg"
-  // add all photo filenames here
-];
-
-// --------- Create heart-shaped collage ----------
+// --------- Heart-shaped photo collage ----------
 const heart = document.getElementById("heart");
-const total = photoFiles.length;
+const photoElements = document.querySelectorAll("#all-photos img");
+const total = photoElements.length;
 
-photoFiles.forEach((src, i) => {
+photoElements.forEach((imgElem, i) => {
   const img = document.createElement("img");
   img.className = "photo";
-  img.src = src;
+  img.src = imgElem.src;
 
-  // Heart math
   const t = Math.PI * 2 * (i / total);
   const x = 16 * Math.pow(Math.sin(t), 3);
   const y = 13 * Math.cos(t) -
@@ -149,6 +148,5 @@ function createStrawberry() {
 
 setInterval(createStrawberry, 200); // every 0.2s
 </script>
-
 </body>
 </html>
