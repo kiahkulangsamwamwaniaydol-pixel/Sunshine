@@ -2,147 +2,159 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title></title> <!-- empty browser tab title -->
+<title></title>
 <style>
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  position: relative;
   height: 100vh;
-  width: 100vw;
-  background: url('A_web_page_dedicates_to_"Sunshine"_features_a_Mine.png') no-repeat center center fixed;
-  background-size: cover;
-}
-
-h1 {
-  text-align: center;
-  color: #ff4f9a;
-  margin-top: 30px;
-  font-size: 2.5em;
-  text-shadow: 2px 2px 10px #ffffffaa;
-  animation: fadeIn 3s ease-in-out;
-}
-
-/* Slideshow container */
-.slideshow {
-  position: relative;
-  width: 100%;
-  height: 80vh;
+  background: #ffffff; /* plain white background */
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
-/* Each photo */
+#upload {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: #ff4f9a;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+}
+
+#play-music {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  background: #ff4f9a;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+}
+
+#heart {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  z-index: 5; /* on top of floating strawberries */
+}
+
 .photo {
   position: absolute;
-  width: 40%;
-  max-width: 300px;
-  border-radius: 20px;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
   opacity: 0;
-  transform: scale(1);
-  transition: all 3s ease-in-out;
+  animation: fadeIn 2s forwards;
 }
 
-/* Alternate left/right */
-.left { left: 10%; }
-.right { right: 10%; }
-
-/* Last photo zoom */
-.zoom { transform: scale(1); transition: transform 15s ease-in-out; }
-
-/* Floating hearts / petals */
-.heart {
+.strawberry {
   position: absolute;
-  color: pink;
-  font-size: 15px;
-  animation: float 8s linear infinite;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 1; /* behind photos */
   user-select: none;
 }
 
-@keyframes float {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-}
-
 @keyframes fadeIn {
-  from { opacity: 0; }
   to { opacity: 1; }
 }
 </style>
 </head>
 <body>
 
-<h1>💖</h1>
+<input id="upload" type="file" accept="image/*" multiple>
+<button id="play-music">Play Music 💖</button>
+<div id="heart"></div>
 
-<div class="slideshow">
-  <img src="photo1.jpg" class="photo left">
-  <img src="photo2.jpg" class="photo right">
-  <img src="photo3.jpg" class="photo left">
-  <img src="photo4.jpg" class="photo right">
-  <img src="photo5.jpg" class="photo left">
-  <img src="photo6.jpg" class="photo right">
-  <img src="photo7.jpg" class="photo left">
-  <img src="photo8.jpg" class="photo right">
-  <img src="photo9.jpg" class="photo left">
-  <img src="photo10.jpg" class="photo right zoom">
-</div>
-
-<!-- Background music -->
 <audio id="bg-music" loop>
   <source src="love-song.mp3" type="audio/mpeg">
 </audio>
 
-<button id="play-music" style="position: fixed; top: 10px; left: 10px; padding: 10px 15px; font-size: 16px; border-radius: 8px; border: none; background: pink; color: white; cursor: pointer; z-index: 1000;">
-  Play Music 💖
-</button>
-
 <script>
-// Floating hearts / petals
-for(let i=0; i<40; i++){
-  let heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "💕";
-  heart.style.left = Math.random()*100 + "vw";
-  heart.style.fontSize = 10 + Math.random()*25 + "px";
-  heart.style.animationDuration = (6 + Math.random()*6) + "s";
-  heart.style.opacity = Math.random();
-  document.body.appendChild(heart);
+const upload = document.getElementById("upload");
+const heart = document.getElementById("heart");
+const music = document.getElementById("bg-music");
+const playBtn = document.getElementById("play-music");
+
+// Play music
+playBtn.addEventListener("click", () => {
+  music.play();
+  playBtn.style.display = "none";
+});
+
+// Heart-shaped photo collage
+upload.addEventListener("change", () => {
+  heart.innerHTML = "";
+  const files = Array.from(upload.files);
+  const total = files.length;
+
+  files.forEach((file, i) => {
+    const img = document.createElement("img");
+    img.className = "photo";
+    img.src = URL.createObjectURL(file);
+
+    // Heart math
+    const t = Math.PI * 2 * (i / total);
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y =
+      13 * Math.cos(t) -
+      5 * Math.cos(2 * t) -
+      2 * Math.cos(3 * t) -
+      Math.cos(4 * t);
+
+    img.style.left = 300 + x * 15 + "px";
+    img.style.top = 300 - y * 15 + "px";
+    img.style.animationDelay = i * 0.05 + "s";
+
+    heart.appendChild(img);
+  });
+});
+
+// Floating strawberries like hearts
+function createStrawberry() {
+  const s = document.createElement("img");
+  s.src = "strawberry.png"; // your strawberry PNG
+  s.className = "strawberry";
+  s.style.left = Math.random() * window.innerWidth + "px";
+  s.style.top = window.innerHeight + "px"; // start from bottom
+  s.style.width = 20 + Math.random() * 25 + "px";
+  s.style.opacity = 0.6 + Math.random() * 0.4;
+
+  document.body.appendChild(s);
+
+  const speed = 1 + Math.random() * 2; // rising speed
+  const drift = (Math.random() - 0.5) * 1; // horizontal drift
+
+  function rise() {
+    const top = parseFloat(s.style.top);
+    const left = parseFloat(s.style.left);
+    if (top > -50) {
+      s.style.top = top - speed + "px";
+      s.style.left = left + drift + "px";
+      requestAnimationFrame(rise);
+    } else {
+      s.remove();
+    }
+  }
+  rise();
 }
 
-// Play music button
-const music = document.getElementById('bg-music');
-const btn = document.getElementById('play-music');
-btn.addEventListener('click', () => {
-  music.play();
-  btn.style.display = 'none';
-});
-
-// Photo slideshow
-window.addEventListener('load', () => {
-  const photos = document.querySelectorAll('.photo');
-  let current = 0;
-
-  function showNextPhoto(){
-    photos.forEach((p,i)=>{
-      p.style.opacity = '0';
-      p.style.transform = 'scale(1)';
-    });
-    const photo = photos[current];
-    photo.style.opacity = '1';
-    if(current === 9){ // last photo zoom
-      photo.style.transform = 'scale(1.25)';
-    }
-    current = (current + 1) % photos.length;
-  }
-
-  showNextPhoto();
-  setInterval(showNextPhoto, 4000);
-});
+// Create strawberries continuously
+setInterval(createStrawberry, 200); // every 0.2s
 </script>
-
 </body>
 </html>
