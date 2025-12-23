@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Sunshine 💕</title>
+<title></title>
 <style>
 body {
   margin: 0;
@@ -87,6 +87,7 @@ h1 {
   <img src="photo9.jpg" class="photo left">
   <img src="photo10.jpg" class="photo right zoom">
 </div>
+
 <!-- Background music -->
 <audio id="bg-music" loop>
   <source src="love-song.mp3" type="audio/mpeg">
@@ -97,10 +98,48 @@ h1 {
 </button>
 
 <script>
+// Floating hearts
+for(let i=0;i<25;i++){
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💕";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=15+Math.random()*30+"px";
+  heart.style.animationDuration=(5+Math.random()*5)+"s";
+  heart.style.opacity=Math.random();
+  document.body.appendChild(heart);
+}
+
+// Play music button
 const music = document.getElementById('bg-music');
 const btn = document.getElementById('play-music');
 btn.addEventListener('click', () => {
   music.play();
   btn.style.display = 'none'; // hide button after clicking
 });
+
+// Photo slideshow
+window.addEventListener('load', () => {
+  const photos = document.querySelectorAll('.photo');
+  let current = 0;
+
+  function showNextPhoto(){
+    photos.forEach((p,i)=>{
+      p.style.opacity = '0';
+      p.style.transform = 'scale(1)';
+    });
+    const photo = photos[current];
+    photo.style.opacity = '1';
+    if(current === 9){ // last photo zoom
+      photo.style.transform = 'scale(1.2)';
+    }
+    current = (current + 1) % photos.length;
+  }
+
+  showNextPhoto();
+  setInterval(showNextPhoto,4000); // change photo every 4s
+});
 </script>
+
+</body>
+</html>
