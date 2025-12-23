@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title></title> <!-- empty title -->
 <style>
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(#ffd6e8, #ffeef6);
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: url('minecraft_sakura_background.png') no-repeat center center fixed;
+  background-size: cover;
 }
 
 h1 {
@@ -18,37 +21,9 @@ h1 {
   color: #ff4f9a;
   margin-top: 30px;
   font-size: 2.5em;
+  text-shadow: 2px 2px 10px #ffffffaa;
   animation: fadeIn 3s ease-in-out;
 }
-
-/* Slideshow container */
-.slideshow {
-  position: relative;
-  width: 100%;
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* Each photo */
-.photo {
-  position: absolute;
-  width: 40%;
-  max-width: 300px;
-  border-radius: 20px;
-  opacity: 0;
-  transform: scale(1);
-  transition: all 3s ease-in-out;
-}
-
-/* Alternate left/right */
-.left { left: 10%; }
-.right { right: 10%; }
-
-/* Last photo zoom */
-.zoom { transform: scale(1); transition: transform 15s ease-in-out; }
 
 /* Floating hearts */
 .heart {
@@ -68,25 +43,11 @@ h1 {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 </style>
 </head>
 <body>
 
-<h1>For Sunshine 💕</h1>
-
-<div class="slideshow">
-  <img src="photo1.jpg" class="photo left">
-  <img src="photo2.jpg" class="photo right">
-  <img src="photo3.jpg" class="photo left">
-  <img src="photo4.jpg" class="photo right">
-  <img src="photo5.jpg" class="photo left">
-  <img src="photo6.jpg" class="photo right">
-  <img src="photo7.jpg" class="photo left">
-  <img src="photo8.jpg" class="photo right">
-  <img src="photo9.jpg" class="photo left">
-  <img src="photo10.jpg" class="photo right zoom">
-</div>
+<h1>💖</h1>
 
 <!-- Background music -->
 <audio id="bg-music" loop>
@@ -100,13 +61,13 @@ h1 {
 <script>
 // Floating hearts
 for(let i=0;i<25;i++){
-  let heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="💕";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=15+Math.random()*30+"px";
-  heart.style.animationDuration=(5+Math.random()*5)+"s";
-  heart.style.opacity=Math.random();
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💕";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.fontSize = 15 + Math.random()*30 + "px";
+  heart.style.animationDuration = (5 + Math.random()*5) + "s";
+  heart.style.opacity = Math.random();
   document.body.appendChild(heart);
 }
 
@@ -116,28 +77,6 @@ const btn = document.getElementById('play-music');
 btn.addEventListener('click', () => {
   music.play();
   btn.style.display = 'none'; // hide button after clicking
-});
-
-// Photo slideshow
-window.addEventListener('load', () => {
-  const photos = document.querySelectorAll('.photo');
-  let current = 0;
-
-  function showNextPhoto(){
-    photos.forEach((p,i)=>{
-      p.style.opacity = '0';
-      p.style.transform = 'scale(1)';
-    });
-    const photo = photos[current];
-    photo.style.opacity = '1';
-    if(current === 9){ // last photo zoom
-      photo.style.transform = 'scale(1.2)';
-    }
-    current = (current + 1) % photos.length;
-  }
-
-  showNextPhoto();
-  setInterval(showNextPhoto,4000); // change photo every 4s
 });
 </script>
 
