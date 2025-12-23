@@ -74,19 +74,17 @@ playBtn.addEventListener("click", () => {
   playBtn.style.display = "none";
 });
 
-// --------- List all photos directly ----------
-const photoFiles = [
-  "photo1.jpg",
-  "photo2.jpg",
-  "photo3.jpg",
-  "photo4.jpg",
-  "photo5.jpg",
-  "photo6.jpg",
-  "photo7.jpg",
-  "photo8.jpg",
-  "photo9.jpg",
-  "photo10.jpg"
+// --------- Base 10 photos ----------
+const basePhotos = [
+  "photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg",
+  "photo6.jpg","photo7.jpg","photo8.jpg","photo9.jpg","photo10.jpg"
 ];
+
+// Repeat photos 5 times for a filled heart
+const photoFiles = [];
+for(let i=0;i<5;i++){
+  photoFiles.push(...basePhotos);
+}
 
 // --------- Create heart-shaped collage ----------
 const heart = document.getElementById("heart");
