@@ -61,58 +61,43 @@ body {
 <button id="play-music">Play Music 💖</button>
 <div id="heart"></div>
 
-<!-- All photos hidden -->
-<div id="all-photos" style="display:none;">
-  <img src="photos/photo1.jpg">
-  <img src="photos/photo2.jpg">
-  <img src="photos/photo3.jpg">
-  <img src="photos/photo4.jpg">
-  <img src="photos/photo5.jpg">
-  <img src="photos/photo6.jpg">
-  <img src="photos/photo7.jpg">
-  <img src="photos/photo8.jpg">
-  <img src="photos/photo9.jpg">
-  <img src="photos/photo10.jpg">
-  <!-- add all other photos here -->
-</div>
-
 <audio id="bg-music" loop>
   <source src="love-song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+// --------- Music Button ----------
 const music = document.getElementById("bg-music");
 const playBtn = document.getElementById("play-music");
-const heart = document.getElementById("heart");
-const photoElements = document.querySelectorAll("#all-photos img");
-
-// Play music
 playBtn.addEventListener("click", () => {
   music.play();
   playBtn.style.display = "none";
 });
 
-// Wait until all photos load
-let loaded = 0;
-photoElements.forEach((imgElem, i) => {
+// --------- List all photos directly ----------
+const photoFiles = [
+  "photo1.jpg",
+  "photo2.jpg",
+  "photo3.jpg",
+  "photo4.jpg",
+  "photo5.jpg",
+  "photo6.jpg",
+  "photo7.jpg",
+  "photo8.jpg",
+  "photo9.jpg",
+  "photo10.jpg"
+];
+
+// --------- Create heart-shaped collage ----------
+const heart = document.getElementById("heart");
+const total = photoFiles.length;
+
+photoFiles.forEach((src, i) => {
   const img = document.createElement("img");
   img.className = "photo";
-  img.src = imgElem.src;
+  img.src = src;
 
   img.onload = () => {
-    loaded++;
-    if (loaded === photoElements.length) {
-      arrangeHeart();
-    }
-  };
-  heart.appendChild(img);
-});
-
-function arrangeHeart() {
-  const photos = heart.querySelectorAll(".photo");
-  const total = photos.length;
-
-  photos.forEach((img, i) => {
     const t = Math.PI * 2 * (i / total);
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y =
@@ -124,10 +109,12 @@ function arrangeHeart() {
     img.style.left = 300 + x * 15 - 40 + "px"; // center correction
     img.style.top = 300 - y * 15 - 40 + "px";  // center correction
     img.style.opacity = 1;
-  });
-}
+  };
 
-// Floating strawberries
+  heart.appendChild(img);
+});
+
+// --------- Floating strawberries ----------
 function createStrawberry() {
   const s = document.createElement("img");
   s.src = "strawberry.png";
