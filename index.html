@@ -43,7 +43,7 @@ body {
   object-fit: cover;
   border-radius: 12px;
   opacity: 0;
-  animation: fadeIn 2s forwards;
+  transition: opacity 1s;
 }
 
 .strawberry {
@@ -54,10 +54,6 @@ body {
   z-index: 1;
   user-select: none;
 }
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
 </style>
 </head>
 <body>
@@ -65,7 +61,7 @@ body {
 <button id="play-music">Play Music 💖</button>
 <div id="heart"></div>
 
-<!-- Hidden div with all photos -->
+<!-- All photos hidden -->
 <div id="all-photos" style="display:none;">
   <img src="photos/photo1.jpg">
   <img src="photos/photo2.jpg">
@@ -77,7 +73,7 @@ body {
   <img src="photos/photo8.jpg">
   <img src="photos/photo9.jpg">
   <img src="photos/photo10.jpg">
-  <!-- Add all other photos here -->
+  <!-- add all other photos here -->
 </div>
 
 <audio id="bg-music" loop>
@@ -85,39 +81,53 @@ body {
 </audio>
 
 <script>
-// --------- Music Button ----------
 const music = document.getElementById("bg-music");
 const playBtn = document.getElementById("play-music");
+const heart = document.getElementById("heart");
+const photoElements = document.querySelectorAll("#all-photos img");
+
+// Play music
 playBtn.addEventListener("click", () => {
   music.play();
   playBtn.style.display = "none";
 });
 
-// --------- Heart-shaped photo collage ----------
-const heart = document.getElementById("heart");
-const photoElements = document.querySelectorAll("#all-photos img");
-const total = photoElements.length;
-
+// Wait until all photos load
+let loaded = 0;
 photoElements.forEach((imgElem, i) => {
   const img = document.createElement("img");
   img.className = "photo";
   img.src = imgElem.src;
 
-  const t = Math.PI * 2 * (i / total);
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = 13 * Math.cos(t) -
-            5 * Math.cos(2 * t) -
-            2 * Math.cos(3 * t) -
-            Math.cos(4 * t);
-
-  img.style.left = 300 + x * 15 + "px";
-  img.style.top = 300 - y * 15 + "px";
-  img.style.animationDelay = i * 0.05 + "s";
-
+  img.onload = () => {
+    loaded++;
+    if (loaded === photoElements.length) {
+      arrangeHeart();
+    }
+  };
   heart.appendChild(img);
 });
 
-// --------- Floating strawberries ----------
+function arrangeHeart() {
+  const photos = heart.querySelectorAll(".photo");
+  const total = photos.length;
+
+  photos.forEach((img, i) => {
+    const t = Math.PI * 2 * (i / total);
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y =
+      13 * Math.cos(t) -
+      5 * Math.cos(2 * t) -
+      2 * Math.cos(3 * t) -
+      Math.cos(4 * t);
+
+    img.style.left = 300 + x * 15 - 40 + "px"; // center correction
+    img.style.top = 300 - y * 15 - 40 + "px";  // center correction
+    img.style.opacity = 1;
+  });
+}
+
+// Floating strawberries
 function createStrawberry() {
   const s = document.createElement("img");
   s.src = "strawberry.png";
@@ -146,7 +156,7 @@ function createStrawberry() {
   rise();
 }
 
-setInterval(createStrawberry, 200); // every 0.2s
+setInterval(createStrawberry, 200);
 </script>
 </body>
 </html>
