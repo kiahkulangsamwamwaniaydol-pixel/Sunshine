@@ -38,8 +38,8 @@ body {
 
 .photo {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 60px;  /* smaller size */
+  height: 60px; /* smaller size */
   object-fit: cover;
   border-radius: 12px;
   opacity: 0;
@@ -104,8 +104,8 @@ photoFiles.forEach((src, i) => {
       2 * Math.cos(3 * t) -
       Math.cos(4 * t);
 
-    img.style.left = 300 + x * 15 - 40 + "px"; // center correction
-    img.style.top = 300 - y * 15 - 40 + "px";  // center correction
+    img.style.left = 300 + x * 20 - 30 + "px";  // wider spacing, center correction
+    img.style.top = 300 - y * 20 - 30 + "px";   // wider spacing, center correction
     img.style.opacity = 1;
   };
 
