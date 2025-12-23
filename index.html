@@ -87,47 +87,20 @@ h1 {
   <img src="photo9.jpg" class="photo left">
   <img src="photo10.jpg" class="photo right zoom">
 </div>
-
 <!-- Background music -->
-<audio autoplay loop>
+<audio id="bg-music" loop>
   <source src="love-song.mp3" type="audio/mpeg">
 </audio>
 
+<button id="play-music" style="position: fixed; top: 10px; left: 10px; padding: 10px 15px; font-size: 16px; border-radius: 8px; border: none; background: pink; color: white; cursor: pointer; z-index: 1000;">
+  Play Music 💖
+</button>
+
 <script>
-// Floating hearts
-for(let i=0;i<25;i++){
-  let heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="💕";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=15+Math.random()*30+"px";
-  heart.style.animationDuration=(5+Math.random()*5)+"s";
-  heart.style.opacity=Math.random();
-  document.body.appendChild(heart);
-}
-
-// Photo slideshow logic
-const photos=document.querySelectorAll('.photo');
-let current=0;
-
-function showNextPhoto(){
-  photos.forEach((p,i)=>{
-    p.style.opacity = '0';
-    p.style.transform = 'scale(1)';
-  });
-  const photo = photos[current];
-  photo.style.opacity = '1';
-  if(current===9){
-    // Last photo slowly zoom in
-    photo.style.transform = 'scale(1.2)';
-  }
-  current = (current + 1) % photos.length;
-}
-
-showNextPhoto();
-setInterval(showNextPhoto,4000); // Change photo every 4 seconds
-
+const music = document.getElementById('bg-music');
+const btn = document.getElementById('play-music');
+btn.addEventListener('click', () => {
+  music.play();
+  btn.style.display = 'none'; // hide button after clicking
+});
 </script>
-
-</body>
-</html>
