@@ -7,26 +7,12 @@
 body {
   margin: 0;
   height: 100vh;
-  background: #ffffff; /* plain white background */
+  background: #ffffff;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
-}
-
-#upload {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-  background: #ff4f9a;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 20px;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
 }
 
 #play-music {
@@ -47,7 +33,7 @@ body {
   position: relative;
   width: 600px;
   height: 600px;
-  z-index: 5; /* on top of floating strawberries */
+  z-index: 5;
 }
 
 .photo {
@@ -62,10 +48,10 @@ body {
 
 .strawberry {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   pointer-events: none;
-  z-index: 1; /* behind photos */
+  z-index: 1;
   user-select: none;
 }
 
@@ -76,7 +62,6 @@ body {
 </head>
 <body>
 
-<input id="upload" type="file" accept="image/*" multiple>
 <button id="play-music">Play Music 💖</button>
 <div id="heart"></div>
 
@@ -85,64 +70,73 @@ body {
 </audio>
 
 <script>
-const upload = document.getElementById("upload");
-const heart = document.getElementById("heart");
+// --------- Music Button ----------
 const music = document.getElementById("bg-music");
 const playBtn = document.getElementById("play-music");
-
-// Play music
 playBtn.addEventListener("click", () => {
   music.play();
   playBtn.style.display = "none";
 });
 
-// Heart-shaped photo collage
-upload.addEventListener("change", () => {
-  heart.innerHTML = "";
-  const files = Array.from(upload.files);
-  const total = files.length;
+// --------- List all photos in the folder ---------
+// You must manually list the filenames inside photos/ folder
+const photoFiles = [
+  "photos/photo1.jpg",
+  "photos/photo2.jpg",
+  "photos/photo3.jpg",
+  "photos/photo4.jpg",
+  "photos/photo5.jpg",
+  "photos/photo6.jpg",
+  "photos/photo7.jpg",
+  "photos/photo8.jpg",
+  "photos/photo9.jpg",
+  "photos/photo10.jpg"
+  // add all photo filenames here
+];
 
-  files.forEach((file, i) => {
-    const img = document.createElement("img");
-    img.className = "photo";
-    img.src = URL.createObjectURL(file);
+// --------- Create heart-shaped collage ----------
+const heart = document.getElementById("heart");
+const total = photoFiles.length;
 
-    // Heart math
-    const t = Math.PI * 2 * (i / total);
-    const x = 16 * Math.pow(Math.sin(t), 3);
-    const y =
-      13 * Math.cos(t) -
-      5 * Math.cos(2 * t) -
-      2 * Math.cos(3 * t) -
-      Math.cos(4 * t);
+photoFiles.forEach((src, i) => {
+  const img = document.createElement("img");
+  img.className = "photo";
+  img.src = src;
 
-    img.style.left = 300 + x * 15 + "px";
-    img.style.top = 300 - y * 15 + "px";
-    img.style.animationDelay = i * 0.05 + "s";
+  // Heart math
+  const t = Math.PI * 2 * (i / total);
+  const x = 16 * Math.pow(Math.sin(t), 3);
+  const y = 13 * Math.cos(t) -
+            5 * Math.cos(2 * t) -
+            2 * Math.cos(3 * t) -
+            Math.cos(4 * t);
 
-    heart.appendChild(img);
-  });
+  img.style.left = 300 + x * 15 + "px";
+  img.style.top = 300 - y * 15 + "px";
+  img.style.animationDelay = i * 0.05 + "s";
+
+  heart.appendChild(img);
 });
 
-// Floating strawberries like hearts
+// --------- Floating strawberries ----------
 function createStrawberry() {
   const s = document.createElement("img");
-  s.src = "strawberry.png"; // your strawberry PNG
+  s.src = "strawberry.png";
   s.className = "strawberry";
   s.style.left = Math.random() * window.innerWidth + "px";
-  s.style.top = window.innerHeight + "px"; // start from bottom
-  s.style.width = 20 + Math.random() * 25 + "px";
+  s.style.top = window.innerHeight + "px";
+  s.style.width = 20 + Math.random() * 20 + "px";
   s.style.opacity = 0.6 + Math.random() * 0.4;
 
   document.body.appendChild(s);
 
-  const speed = 1 + Math.random() * 2; // rising speed
-  const drift = (Math.random() - 0.5) * 1; // horizontal drift
+  const speed = 1 + Math.random() * 2;
+  const drift = (Math.random() - 0.5) * 1;
 
   function rise() {
     const top = parseFloat(s.style.top);
     const left = parseFloat(s.style.left);
-    if (top > -50) {
+    if(top > -50){
       s.style.top = top - speed + "px";
       s.style.left = left + drift + "px";
       requestAnimationFrame(rise);
@@ -153,8 +147,8 @@ function createStrawberry() {
   rise();
 }
 
-// Create strawberries continuously
 setInterval(createStrawberry, 200); // every 0.2s
 </script>
+
 </body>
 </html>
